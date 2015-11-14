@@ -1,0 +1,204 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
+    <h:head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title><ui:insert name="title">Welcome #{loginBean.remoteUser}!</ui:insert></title>
+        <h:outputStylesheet name="css/foundation.css" />
+        <h:outputScript name="js/vendor/modernizr.js" />
+        <!--<h1><ui:insert name="title">Default Title</ui:insert></h1>-->
+    </h:head>
+<h:body>
+        <nav class="top-bar" data-topbar="" role="navigation">
+            <ul class="title-area">
+                <li class="name">
+                    <h1><a href="#">My HomePage</a></h1>
+                </li>
+                <!-- Remove the class "menu-icon" to get rid of menu icon. Take out "Menu" to just have icon alone -->
+                <li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
+            </ul>
+            <section class="top-bar-section">
+                <!-- Right Nav Section -->
+                <ul class="right">
+                    <li class="has-dropdown">
+                        <a href="#">Create</a>
+                        <ul class="dropdown">
+                            <li><a href="#{request.contextPath}/admin/createstudent.xhtml">Create Student</a></li>
+                            <li><a href="#{request.contextPath}/admin/createFaculty.xhtml">Create Faculty</a></li>
+                            <li><a href="#{request.contextPath}/admin/createCourse.xhtml">Create Course</a></li>
+                            <li><a href="#{request.contextPath}/admin/createAdvisor.xhtml">Create Advisor</a></li>
+                        </ul>
+                        
+                    </li>
+                    <li class="has-dropdown">
+                        <a href="#">#{loginBean.remoteUser}</a>
+                        <ul class="dropdown">
+                            <li><h:form><h:commandLink action="#{loginBean.doLogout()}" value="Logout"/></h:form></li>
+                            <!--<li><a href="#">First link in dropdown</a></li>-->
+                            <!--<li class="active"><a href="#">Active link in dropdown</a></li>-->
+                        </ul>
+                    </li>
+                </ul>
+                <!-- Left Nav Section -->
+                <ul class="left">
+                    <!--<li><a href="#">Left Nav Button</a></li>-->
+                </ul>
+            </section>
+        </nav>
+        <h1><ui:insert name="title">Welcome #{loginBean.remoteUser}!</ui:insert></h1>
+        
+        <h:panelGroup layout="block"
+                      class="alert-box alert round"
+                      p:data-alert=""
+                      rendered="#{not facesContext.validationFailed and not empty facesContext.messageList}">
+            <h:messages showDetail="false" globalOnly="true" showSummary="true"/>
+            <a href="#" class="close">&times;</a>
+        </h:panelGroup>
+        
+    <ui:insert name="body">
+        
+<!--        <ui:define name="body">-->
+        <div class="large-10">
+            <div class="large-3 column">
+                <h:link outcome="createstudent.xhtml" value="Create New Student"/>
+            </div>
+            <div class="large-3 column">
+                <h:link outcome="createAdvisor.xhtml" value="Create New Advisor"/>
+            </div>
+            <div class="large-3 column">
+                <h:link outcome="createFaculty.xhtml" value="Create New Faculty"/>
+            </div>
+            <div class="large-3 column">
+                <h:link outcome="createCourse.xhtml" value="Create New Course"/>
+            </div>
+        </div>
+        <br></br>
+        <h:dataTable value="#{studentsService.findAll()}" var="students">
+            <h:column>
+                <f:facet name="header"><h:outputText value="Id"/></f:facet>
+                <h:outputText value="#{students.id}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header"><h:outputText value="First Name"/></f:facet>
+                <h:outputText value="#{students.studentFName}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header"><h:outputText value="Last Name"/></f:facet>
+                <h:outputText value="#{students.studentLName}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header"><h:outputText value="Email"/></f:facet>
+                <h:outputText value="#{students.studentEmail}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header"><h:outputText value="Degree"/></f:facet>
+                <h:outputText value="#{students.studentDegreeType}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header"><h:outputText value="Address"/></f:facet>
+                <h:outputText value="#{students.studentAddress}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header"><h:outputText value="Advisor"/></f:facet>
+                <h:outputText value="#{students.advisor.advisorFName}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header"><h:outputText value="Status"/></f:facet>
+                <h:outputText value="#{students.registration.registrationStatus}"/>
+            </h:column>
+<!--            <h:column>
+                <f:facet name="header"><h:outputText value="Course"/></f:facet>
+                <h:outputText value="#{students.cors.courseName}"/>
+            </h:column>-->
+            <h:column>
+                <f:facet name="header"><h:outputText value="Department"/></f:facet>
+                <h:outputText value="#{students.department.departmentName}"/>
+            </h:column>
+<!--            <h:column>
+                <f:facet name="header"><h:outputText value="Faculty"/></f:facet>
+                <h:outputText value="#{students.faculty.facultyFName}"/>
+            </h:column>-->
+            <h:column>
+                <f:facet name="header"><h:outputText value="DOB"/></f:facet>
+                <h:outputText value="#{students.studentDOB}">
+                    <f:convertDateTime/>
+                </h:outputText>
+            </h:column>
+        </h:dataTable> 
+    
+    
+        <h:dataTable value="#{facultyService.findAll()}" var="faculty">
+                <h:column>
+                    <f:facet name="header"><h:outputText value="Id"/></f:facet>
+                    <h:outputText value="#{faculty.id}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header"><h:outputText value="First Name"/></f:facet>
+                    <h:outputText value="#{faculty.facultyFName}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header"><h:outputText value="Last Name"/></f:facet>
+                    <h:outputText value="#{faculty.facultyLName}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header"><h:outputText value="Department"/></f:facet>
+                    <h:outputText value="#{faculty.department.departmentName}"/>
+                </h:column>
+<!--                <h:column>
+                    <f:facet name="header"><h:outputText value="Course"/></f:facet>
+                    <h:outputText value="#{faculty.courses.courseName}"/>
+                </h:column>-->
+        </h:dataTable> 
+
+        <h:dataTable value="#{coursesService.findAll()}" var="course">
+                <h:column>
+                    <f:facet name="header"><h:outputText value="Id"/></f:facet>
+                    <h:outputText value="#{course.id}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header"><h:outputText value="Course"/></f:facet>
+                    <h:outputText value="#{course.courseName}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header"><h:outputText value="Department"/></f:facet>
+                    <h:outputText value="#{course.department.departmentName}"/>
+                </h:column>
+        </h:dataTable> 
+        <h:dataTable value="#{advisorService.findAll()}" var="advisor">
+                <h:column>
+                    <f:facet name="header"><h:outputText value="Id"/></f:facet>
+                    <h:outputText value="#{advisor.id}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header"><h:outputText value="First Name"/></f:facet>
+                    <h:outputText value="#{advisor.advisorFName}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header"><h:outputText value="Last Name"/></f:facet>
+                    <h:outputText value="#{advisor.advisorLName}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header"><h:outputText value="Email"/></f:facet>
+                    <h:outputText value="#{advisor.advisorEmail}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header"><h:outputText value="Department"/></f:facet>
+                    <h:outputText value="#{advisor.department.departmentName}"/>
+                </h:column>
+        </h:dataTable> 
+    <!--</ui:define>-->
+    </ui:insert>
+        <h:outputScript name="js/vendor/jquery.js" />
+        <h:outputScript name="js/foundation.min.js" />
+        <script>
+            $(document).foundation();
+        </script>
+        
+</h:body>
+
+  </ui:composition>  

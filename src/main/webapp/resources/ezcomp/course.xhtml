@@ -1,0 +1,66 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+    <!-- INTERFACE -->
+    <cc:interface>
+        <cc:attribute name="course" type="edu.iit.sat.itmd4515.usneha.fp.domain.Courses" required="true"/>
+        <cc:attribute name="readonly" type="java.lang.Boolean" required="false" default="true" />
+        <cc:attribute name="action" required="false" method-signature="java.lang.String action()"/>
+        
+    </cc:interface>
+
+    <!-- IMPLEMENTATION -->
+    <cc:implementation>
+        
+        <h:form>
+            <div class="row">
+                <div class="large-12 columns">
+                    <h:outputLabel for="id" value="Course ID: #{cc.attrs.course.id}" />
+                    <h:inputHidden id="id" value="#{cc.attrs.course.id}" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="large-12 columns">
+                    <h:outputLabel for="courseName" value="Course Name" />
+                    <h:inputText p:placeholder="Course Name" id="courseName" value="#{cc.attrs.course.courseName}" required="true" />
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="large-12 columns">
+                    <h:outputLabel for="department" value="Department" />
+                    <h:selectOneListbox id="department"  value="#{cc.attrs.course.department.id}" >
+                        <f:selectItems value="#{departmentService.findAll()}" var="department" itemLabel="#{department.departmentName}" itemValue="#{department.id}"/>
+                    </h:selectOneListbox>
+                </div>
+            </div>
+            <div class="row">
+                <div class="large-12 columns">
+                    <h:outputLabel for="faculty" value="Faculty" />
+                    <h:selectOneListbox id="faculty"  value="#{adminBean.facult.id}" >
+                        <f:selectItems value="#{facultyService.findAll()}" var="faculty" itemLabel="#{faculty.facultyFName}" itemValue="#{faculty.id}"/>
+                    </h:selectOneListbox>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="large-12 columns">
+                </div>
+            </div>
+            <ui:fragment rendered="#{not cc.attrs.readonly}">
+                <div class="row">
+                    <div class="large-12 columns">
+                        <h:commandButton action="#{cc.attrs.action}" class="button expand" value="Save"/>
+                    </div>
+                </div>
+            </ui:fragment>
+        </h:form>
+        
+    </cc:implementation>
+</html>

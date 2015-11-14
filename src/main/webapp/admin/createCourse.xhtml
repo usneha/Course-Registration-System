@@ -1,0 +1,82 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:ezcomp="http://xmlns.jcp.org/jsf/composite/ezcomp"
+                xmlns:h="http://xmlns.jcp.org/jsf/html">
+
+    <h:head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css"/>
+        <!-- jQuery library -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+        <!-- Latest compiled JavaScript -->
+        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+        <title><ui:insert name="title">Create new Course</ui:insert></title>
+        <h:outputStylesheet name="css/foundation.css" />
+        <h:outputScript name="js/vendor/modernizr.js" />
+    </h:head>
+
+    
+    <h:body>
+        <nav class="top-bar" data-topbar="" role="navigation">
+            <ul class="title-area">
+                <li class="name">
+                    <h1><a href="welcome.xhtml">My HomePage</a></h1>
+                </li>
+                <!-- Remove the class "menu-icon" to get rid of menu icon. Take out "Menu" to just have icon alone -->
+                <li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
+            </ul>
+            <section class="top-bar-section">
+                <!-- Right Nav Section -->
+                <ul class="right">
+                     <li class="has-dropdown">
+                        <a href="#">Create</a>
+                        <ul class="dropdown">
+                            <li><a href="createstudent.xhtml">Create Student</a></li>
+                            <li><a href="createFaculty.xhtml">Create Faculty</a></li>
+                            <li><a href="createCourse.xhtml">Create Course</a></li>
+                            <li><a href="createAdvisor.xhtml">Create Advisor</a></li>
+                        </ul>
+                        
+                    </li>
+                    <li class="has-dropdown">
+                        <a href="#">#{loginBean.remoteUser}</a>
+                        <ul class="dropdown">
+                            <li><h:form><h:commandLink action="#{loginBean.doLogout()}" value="Logout"/></h:form></li>
+                            <!--<li><a href="#">First link in dropdown</a></li>-->
+                            <!--<li class="active"><a href="#">Active link in dropdown</a></li>-->
+                        </ul>
+                    </li>
+                </ul>
+                
+            </section>
+        </nav>
+        <h1><ui:insert name="title">Create new Course</ui:insert></h1>
+        
+        <h:panelGroup layout="block"
+                      class="alert-box alert round"
+                      p:data-alert=""
+                      rendered="#{not facesContext.validationFailed and not empty facesContext.messageList}">
+            <h:messages showDetail="false" globalOnly="true" showSummary="true"/>
+            <a href="#" class="close">&times;</a>
+        </h:panelGroup>
+        
+        <ui:insert name="body">
+            <div class="large-6 columns">
+                <ezcomp:course course="#{adminBean.course}" readonly="false" action="#{adminBean.executeCourseSave()}"/>
+            </div>
+        </ui:insert>
+        
+        <h:outputScript name="js/vendor/jquery.js" />
+        <h:outputScript name="js/foundation.min.js" />
+        <script>
+            $(document).foundation();
+        </script>
+    </h:body>
+</ui:composition>

@@ -1,0 +1,32 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <!-- INTERFACE -->
+    <cc:interface>
+        <cc:attribute name="advisors" type="java.util.List" required="true"/>
+    </cc:interface>
+
+    <!-- IMPLEMENTATION -->
+    <cc:implementation>
+        <h:dataTable value="#{cc.attrs.advisors}" var="reg">
+            <h:column>
+                <f:facet name="header"><h:outputText value="id"/></f:facet>
+                <h:outputText value="#{reg.id}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header"><h:outputText value="status"/></f:facet>
+                <h:outputText value="#{reg.registrationStatus}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header"><h:outputText value="Last Updated"/></f:facet>
+                <h:outputText value="#{reg.registrationDate}">
+                    <f:convertDateTime type="both" dateStyle="full"/>
+                </h:outputText>
+            </h:column>
+        </h:dataTable>
+    </cc:implementation>
+</html>

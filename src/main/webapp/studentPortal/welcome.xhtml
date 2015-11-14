@@ -1,0 +1,156 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:ezcomp="http://xmlns.jcp.org/jsf/composite/ezcomp"
+                xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
+
+   <h:head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title><ui:insert name="title">Welcome  #{loginBean.remoteUser}!</ui:insert></title>
+        <h:outputStylesheet name="css/foundation.css" />
+        <h:outputScript name="js/vendor/modernizr.js" />
+        <!--<h1><ui:insert name="title">Default Title</ui:insert></h1>-->
+    </h:head>
+
+    
+     <h:body>
+        <nav class="top-bar" data-topbar="" role="navigation">
+            <ul class="title-area">
+                <li class="name">
+                    <h1><a href="#">My HomePage</a></h1>
+                </li>
+                <!-- Remove the class "menu-icon" to get rid of menu icon. Take out "Menu" to just have icon alone -->
+                <li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
+            </ul>
+            <section class="top-bar-section">
+                <!-- Right Nav Section -->
+                <ul class="right">
+                    <li class="has-dropdown">
+                        <a href="#">Register</a>
+                        <ul class="dropdown">
+                            <li><a href="#{request.contextPath}/studentPortal/register.xhtml">Register</a></li>
+                        </ul>
+                        
+                    </li>
+                    <li class="has-dropdown">
+                        <a href="#">#{loginBean.remoteUser}</a>
+                        <ul class="dropdown">
+                            <li><h:form><h:commandLink action="#{loginBean.doLogout()}" value="Logout"/></h:form></li>
+                            <!--<li><a href="#">First link in dropdown</a></li>-->
+                            <!--<li class="active"><a href="#">Active link in dropdown</a></li>-->
+                        </ul>
+                    </li>
+                </ul>
+                <!-- Left Nav Section -->
+                <ul class="left">
+                    <!--<li><a href="#">Left Nav Button</a></li>-->
+                </ul>
+            </section>
+        </nav>
+        <h1><ui:insert name="title">Welcome  #{loginBean.remoteUser}!</ui:insert></h1>
+        
+        <h:panelGroup layout="block"
+                      class="alert-box alert round"
+                      p:data-alert=""
+                      rendered="#{not facesContext.validationFailed and not empty facesContext.messageList}">
+            <h:messages showDetail="false" globalOnly="true" showSummary="true"/>
+            <a href="#" class="close">&times;</a>
+        </h:panelGroup>
+        
+    <ui:insert name="body">
+        <h:link outcome="register.xhtml" value="Register for Course"/>
+        
+        <h:dataTable value="#{studentsBean.student}" var="student">
+            <h:column>
+                <f:facet name="header"><h:outputText value="ID"/></f:facet>
+                <h:outputText value="#{student.id}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header"><h:outputText value="FirstName"/></f:facet>
+                <h:outputText value="#{student.studentFName}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header"><h:outputText value="LastName"/></f:facet>
+                <h:outputText value="#{student.studentLName}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header"><h:outputText value="Email"/></f:facet>
+                <h:outputText value="#{student.studentEmail}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header"><h:outputText value="Degree"/></f:facet>
+                <h:outputText value="#{student.studentDegreeType}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header"><h:outputText value="Address"/></f:facet>
+                <h:outputText value="#{student.studentAddress}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header"><h:outputText value="Status"/></f:facet>
+                <h:outputText value="#{student.registration.registrationStatus}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header"><h:outputText value="AdvisorName"/></f:facet>
+                <h:outputText value="#{student.advisor.advisorFName}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header"><h:outputText value="AdvisorEmail"/></f:facet>
+                <h:outputText value="#{student.advisor.advisorEmail}"/>
+            </h:column>
+            <h:column>
+                <h:form><h:commandLink action="#{studentsBean.doUpdate(student)}" value="Update"/></h:form>
+            </h:column>
+        </h:dataTable>
+        
+        
+        <h:dataTable value="#{studentsBean.courses}" var="courses">
+            <h:column>
+                <f:facet name="header"><h:outputText value="Course ID"/></f:facet>
+                <h:outputText value="#{courses.id}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header"><h:outputText value="Course Name"/></f:facet>
+                <h:outputText value="#{courses.courseName}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header"><h:outputText value="Department Name"/></f:facet>
+                <h:outputText value="#{courses.department.departmentName}"/>
+            </h:column>
+
+            <h:column>
+                <f:facet name="header"><h:outputText value="LastUpdated"/></f:facet>
+                <h:outputText value="#{courses.lastUpdated}">
+                    <f:convertDateTime type="both" dateStyle="full"/>
+                </h:outputText>
+            </h:column>
+            
+            <h:column>
+                <h:form><h:commandLink action="#{adminBean.doDelete(students)}" value="Drop"/></h:form>
+            </h:column>
+        </h:dataTable>
+        
+        <div class="large-6 columns">
+            <ezcomp:findAdvisor student="#{adminBean.student}" readonly="false" action="#{adminBean.findAdvisor()}"/>
+        </div>
+        <div class="large-6 columns">
+        <h:dataTable value="#{adminBean.student}" var="stud" rendered="#{not empty adminBean.student}">
+            <h:column>#{stud.advisor.advisorFName}</h:column>
+            <h:column>#{stud.advisor.advisorLName}</h:column>
+            <h:column>#{stud.advisor.advisorEmail}</h:column>
+        </h:dataTable>
+        </div>
+        <h:outputText value="No matches found!" rendered="#{not empty student and empty advisor}" />
+        
+    </ui:insert>
+        <h:outputScript name="js/vendor/jquery.js" />
+        <h:outputScript name="js/foundation.min.js" />
+        <script>
+            $(document).foundation();
+        </script>
+        
+</h:body>
+</ui:composition>

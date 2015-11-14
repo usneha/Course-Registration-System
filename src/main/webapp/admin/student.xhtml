@@ -1,0 +1,161 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:ezcomp="http://xmlns.jcp.org/jsf/composite/ezcomp">
+<!--    <ui:define name="title">
+       Create New Student
+    </ui:define>
+    
+        <ui:define name="body">
+        <div class="large-6 columns">
+            <ezcomp:student student="#{adminBean.student}" readonly="false" action="#{adminBean.executeStudentSave()}"/>
+        </div>
+    </ui:define>-->
+
+    <h:head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title><ui:insert name="title">#{not empty adminBean.student.id? "Update Student" : "Create New Student" }</ui:insert></title>
+        <h:outputStylesheet name="css/foundation.css" />
+        <h:outputScript name="js/vendor/modernizr.js" />
+    </h:head>
+
+    <h:body>
+        <nav class="top-bar" data-topbar="" role="navigation">
+            <ul class="title-area">
+                <li class="name">
+                    <h1><a href="welcome.xhtml">My HomePage</a></h1>
+                </li>
+                <!-- Remove the class "menu-icon" to get rid of menu icon. Take out "Menu" to just have icon alone -->
+                <li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
+            </ul>
+            <section class="top-bar-section">
+                <!-- Right Nav Section -->
+                <ul class="right">
+                    <li class="has-dropdown">
+                        <a href="#">Create</a>
+                        <ul class="dropdown">
+                            <li><a href="admin/createstudent.xhtml">Create Student</a></li>
+                            <li><a href="admin/createFaculty.xhtml">Create Faculty</a></li>
+                            <li><a href="admin/createCourse.xhtml">Create Course</a></li>
+                            <li><a href="admin/createAdvisor.xhtml">Create Advisor</a></li>
+                        </ul>
+                        
+                    </li>
+                    <li class="has-dropdown">
+                        <a href="#">#{loginBean.remoteUser}</a>
+                        <ul class="dropdown">
+                            <li><h:form><h:commandLink action="#{loginBean.doLogout()}" value="Logout"/></h:form></li>
+                            <!--<li><a href="#">First link in dropdown</a></li>-->
+                            <!--<li class="active"><a href="#">Active link in dropdown</a></li>-->
+                        </ul>
+                    </li>
+                </ul>
+                <!-- Left Nav Section -->
+                <ul class="left">
+                    <!--<li><a href="#">Left Nav Button</a></li>-->
+                </ul>
+            </section>
+        </nav>
+        <h1><ui:insert name="title">#{not empty adminBean.student.id? "Update Student" : "Create New Student" }</ui:insert></h1>
+        
+        <h:panelGroup layout="block"
+                      class="alert-box alert round"
+                      p:data-alert=""
+                      rendered="#{not facesContext.validationFailed and not empty facesContext.messageList}">
+            <h:messages showDetail="false" globalOnly="true" showSummary="true"/>
+            <a href="#" class="close">&times;</a>
+        </h:panelGroup>
+        
+        <ui:insert name="body">
+            <h:form>
+            <div class="row">
+                <div class="large-12 columns">
+                    <h:outputLabel for="id" value="Student ID #{adminBean.student.id}" rendered="#{not empty adminBean.student.id}" />
+                    <h:inputHidden id="id" value="#{adminBean.student.id}" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="large-12 columns">
+                    <h:outputLabel for="firstName" value="FirstName" />
+                    <h:inputText p:placeholder="First Name" id="firstName" value="#{adminBean.student.studentFName}" required="true"/>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="large-12 columns">
+                    <h:outputLabel for="lastName" value="Last Name" />
+                    <h:inputText p:placeholder="Last Name" id="lastName" value="#{adminBean.student.studentLName}" required="true" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="large-12 columns">
+                    <h:outputLabel for="email" value="Email" />
+                    <h:inputText p:placeholder="Email" id="email" value="#{adminBean.student.studentEmail}" required="true"/>
+                </div>
+            </div>
+            <div class="row">
+                <div class="large-12 columns">
+                    <h:outputLabel for="degree" value="Degree" />
+                    <h:selectOneListbox id="degree"  value="#{adminBean.student.studentDegreeType}" required="true" >
+                        <f:selectItems value="#{studentsService.findAll()}" var="degree" itemLabel="#{degree.studentDegreeType}" itemValue="#{degree.studentDegreeType}"/>
+                    </h:selectOneListbox>
+                </div>
+            </div>
+           <div class="row">
+                <div class="large-12 columns">
+                    <h:outputLabel for="address" value="Address" />
+                    <h:inputText p:placeholder="Address" id="address" value="#{adminBean.student.studentAddress}" required="true" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="large-12 columns">
+                    <h:outputLabel for="department" value="Department" />
+                    <h:selectOneListbox id="department"  value="#{adminBean.student.department.id}" required="true" >
+                        <f:selectItems value="#{departmentService.findAll()}" var="department" itemLabel="#{department.departmentName}" itemValue="#{department.id}"/>
+                    </h:selectOneListbox>
+                </div>
+            </div>
+            <div class="row">
+                <div class="large-12 columns">
+                    <h:outputLabel for="advisor" value="Advisor" />
+                    <h:selectOneListbox id="advisor"  value="#{adminBean.student.advisor.id}" required="true">
+                        <f:selectItems value="#{advisorService.findAll()}" var="advisor" itemLabel="#{advisor.advisorFName}" itemValue="#{advisor.id}"/>
+                    </h:selectOneListbox>
+                </div>
+            </div>
+            <div class="row">
+                <div class="large-12 columns">
+                    <h:outputLabel for="reg" value="Registration" />
+                    <h:selectOneListbox id="reg"  value="#{adminBean.student.registration.id}" required="true" >
+                        <f:selectItems value="#{registrationService.findAll()}" var="reg" itemLabel="#{reg.registrationStatus}" itemValue="#{reg.id}"/>
+                    </h:selectOneListbox>
+                </div>
+            </div>
+            <div class="row">
+                <div class="large-12 columns">
+                    <h:outputLabel for="username" value="User Name" />
+                    <h:inputText p:placeholder="User Name" id="username" value="#{adminBean.student.user.userName}" required="true"/>
+                </div>
+            </div>
+            <div class="row">
+                <div class="large-12 columns">
+                    <h:commandButton action="#{adminBean.executeStudentSave()}" class="button expand" value="Save"/>
+                </div>
+            </div>
+        </h:form>
+            
+        </ui:insert>
+        <h:outputScript name="js/vendor/jquery.js" />
+        <h:outputScript name="js/foundation.min.js" />
+        <script>
+            $(document).foundation();
+        </script>
+    </h:body>
+    
+</ui:composition>
